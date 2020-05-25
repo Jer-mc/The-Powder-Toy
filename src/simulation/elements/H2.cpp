@@ -35,8 +35,8 @@ void Element::Element_H2()
 
 	LowPressure = IPL;
 	LowPressureTransition = NT;
-	HighPressure = IPH;
-	HighPressureTransition = NT;
+	HighPressure = 255;
+	HighPressureTransition = PT_HELI; //Change this to eventually simulate 'loss'
 	LowTemperature = ITL;
 	LowTemperatureTransition = NT;
 	HighTemperature = ITH;

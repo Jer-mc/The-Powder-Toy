@@ -25,12 +25,12 @@ void Element::Element_TTAN()
 	Flammable = 0;
 	Explosive = 0;
 	Meltable = 1;
-	Hardness = 50;
+	Hardness = 170;
 
-	Weight = 100;
+	Weight = 300;
 
 	HeatConduct = 251;
-	Description = "Titanium. Higher melting temperature than most other metals, blocks all air pressure.";
+	Description = "Titanium. High melting temperature, blocks all air pressure.";
 
 	Properties = TYPE_SOLID|PROP_CONDUCTS|PROP_HOT_GLOW|PROP_LIFE_DEC;
 
@@ -68,6 +68,28 @@ static int update(UPDATE_FUNC_ARGS)
 	{
 		sim->air->bmap_blockair[y/CELL][x/CELL] = 1;
 		sim->air->bmap_blockairh[y/CELL][x/CELL] = 0x8;
+	}
+
+	if ((parts[i].temp > 1940)) {
+		int r, rx, ry;
+		float cxy = 0;
+		for (rx = -2; rx < 3; rx++)
+			for (ry = -2; ry < 3; ry++)
+				if (BOUNDS_CHECK && (rx || ry))
+				{
+					r = pmap[y + ry][x + rx];
+					if (!r)
+						continue;
+					if (TYP(r) == PT_STEL)
+					{
+						if (RNG::Ref().chance(1, 1))
+						{
+							sim->create_part(i, x, y, PT_TTSL);
+							sim->kill_part(ID(r));
+
+						}
+					}
+				}
 	}
 	return 0;
 }

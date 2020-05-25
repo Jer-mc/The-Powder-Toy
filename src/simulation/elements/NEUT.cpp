@@ -141,7 +141,15 @@ static int update(UPDATE_FUNC_ARGS)
 				case PT_DESL:
 				case PT_OIL:
 					if (RNG::Ref().chance(3, 200))
-						sim->part_change_type(ID(r),x+rx,y+ry,PT_GAS);
+						sim->part_change_type(ID(r), x + rx, y + ry, PT_GAS);
+					if (RNG::Ref().chance(3, 100))
+						sim->part_change_type(ID(r), x + rx, y + ry, PT_GASO);
+					if (RNG::Ref().chance(3, 800))
+						sim->part_change_type(ID(r), x + rx, y + ry, PT_KERO);
+					break;
+				case PT_KERO:
+					if (RNG::Ref().chance(3, 1200))
+						sim->part_change_type(ID(r), x + rx, y + ry, PT_GASO);
 					break;
 				case PT_COAL:
 					if (RNG::Ref().chance(1, 20))

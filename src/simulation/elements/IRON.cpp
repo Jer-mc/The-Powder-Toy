@@ -24,12 +24,12 @@ void Element::Element_IRON()
 	Flammable = 0;
 	Explosive = 0;
 	Meltable = 1;
-	Hardness = 50;
+	Hardness = 150;
 
 	Weight = 100;
 
 	HeatConduct = 251;
-	Description = "Rusts with salt, can be used for electrolysis of WATR.";
+	Description = "Iron, a strong, durable, metal that corrodes easily. Useful in alloy production.";
 
 	Properties = TYPE_SOLID|PROP_CONDUCTS|PROP_LIFE_DEC|PROP_HOT_GLOW;
 
@@ -79,6 +79,28 @@ static int update(UPDATE_FUNC_ARGS)
 					break;
 				}
 			}
+
+	if ((parts[i].temp > 1670)) {
+		int r, rx, ry;
+		float cxy = 0;
+		for (rx = -2; rx < 3; rx++)
+			for (ry = -2; ry < 3; ry++)
+				if (BOUNDS_CHECK && (rx || ry))
+				{
+					r = pmap[y + ry][x + rx];
+					if (!r)
+						continue;
+					if (TYP(r) == PT_COAL)
+					{
+						if (RNG::Ref().chance(1, 3))
+						{
+							sim->create_part(i, x, y, PT_STEL);
+							sim->kill_part(ID(r));
+
+						}
+					}
+				}
+	}
 	return 0;
 succ:
 	sim->part_change_type(i,x,y,PT_BMTL);

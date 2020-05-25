@@ -32,8 +32,8 @@ void Element::Element_GAS()
 
 	Properties = TYPE_GAS | PROP_NEUTPASS;
 
-	LowPressure = IPL;
-	LowPressureTransition = NT;
+	LowPressure = -0.05f;
+	LowPressureTransition = PT_GASO;
 	HighPressure = 6.0f;
 	HighPressureTransition = PT_OIL;
 	LowTemperature = ITL;

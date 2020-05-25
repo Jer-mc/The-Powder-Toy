@@ -32,7 +32,7 @@ void Element::Element_FIRE()
 
 	Weight = 2;
 
-	DefaultProperties.temp = R_TEMP + 400.0f + 273.15f;
+	DefaultProperties.temp = R_TEMP + 850.0f + 273.15f;
 	HeatConduct = 88;
 	Description = "Ignites flammable materials. Heats air.";
 
@@ -44,7 +44,7 @@ void Element::Element_FIRE()
 	HighPressureTransition = NT;
 	LowTemperature = ITL;
 	LowTemperatureTransition = NT;
-	HighTemperature = 2773.0f;
+	HighTemperature = 3800.0f;
 	HighTemperatureTransition = PT_PLSM;
 
 	Update = &Element_FIRE_update;
@@ -122,10 +122,28 @@ int Element_FIRE_update(UPDATE_FUNC_ARGS)
 					if ((t==PT_FIRE || t==PT_PLSM))
 					{
 						if (parts[ID(r)].life>100 && RNG::Ref().chance(1, 500)) {
+							parts[ID(r)].temp += 3590;
 							parts[ID(r)].life = 99;
 						}
 					}
 					else if (t==PT_LAVA)
+					{
+						if (parts[i].ctype == PT_IRON && RNG::Ref().chance(1, 500)) {
+							parts[i].ctype = PT_METL;
+							sim->kill_part(ID(r));
+						}
+					}
+				}
+
+				if ((rt == PT_CHRC)) {
+					if ((t == PT_FIRE || t == PT_PLSM))
+					{
+						if (parts[ID(r)].life > 100 && RNG::Ref().chance(1, 500)) {
+							parts[ID(r)].temp += 2090;
+							parts[ID(r)].life = 99;
+						}
+					}
+					else if (t == PT_LAVA)
 					{
 						if (parts[i].ctype == PT_IRON && RNG::Ref().chance(1, 500)) {
 							parts[i].ctype = PT_METL;

@@ -31,7 +31,7 @@ void Element::Element_COAL()
 	Weight = 100;
 
 	HeatConduct = 200;
-	Description = "Coal, Burns very slowly. Gets red when hot.";
+	Description = "Coal, Burns slower than CHRC. Gets red when hot.";
 
 	Properties = TYPE_SOLID;
 
@@ -44,7 +44,7 @@ void Element::Element_COAL()
 	HighTemperature = ITH;
 	HighTemperatureTransition = NT;
 
-	DefaultProperties.life = 110;
+	DefaultProperties.life = 1250;
 	DefaultProperties.tmp = 50;
 
 	Update = &Element_COAL_update;
@@ -56,7 +56,7 @@ int Element_COAL_update(UPDATE_FUNC_ARGS)
 	if (parts[i].life<=0) {
 		sim->create_part(i, x, y, PT_FIRE);
 		return 1;
-	} else if (parts[i].life < 100) {
+	} else if (parts[i].life < 150) {
 		parts[i].life--;
 		sim->create_part(-1, x + RNG::Ref().between(-1, 1), y + RNG::Ref().between(-1, 1), PT_FIRE);
 	}
@@ -73,6 +73,29 @@ int Element_COAL_update(UPDATE_FUNC_ARGS)
 	}
 	if(parts[i].temp > parts[i].tmp2)
 		parts[i].tmp2 = parts[i].temp;
+
+	if ((parts[i].temp > 4500)) {
+		int r, rx, ry;
+		float cxy = 0;
+		for (rx = -2; rx < 3; rx++)
+			for (ry = -2; ry < 3; ry++)
+				if (BOUNDS_CHECK && (rx || ry))
+				{
+					r = pmap[y + ry][x + rx];
+					if (!r)
+						continue;
+					if (TYP(r) == PT_COCH)
+					{
+						if (RNG::Ref().chance(3, 1))
+						{
+							sim->create_part(i, x, y, PT_COCA);
+							sim->kill_part(ID(r));
+
+						}
+					}
+				}
+	}
+
 	return 0;
 }
 
@@ -81,7 +104,7 @@ constexpr float FREQUENCY = 3.1415/(2*300.0f-(300.0f-200.0f));
 int Element_COAL_graphics(GRAPHICS_FUNC_ARGS)
  //Both COAL and Broken Coal
 {
-	*colr += (cpart->tmp2-295.15f)/3;
+	*colr += (cpart->tmp2-2950.15f)/3;
 
 	if (*colr > 170)
 		*colr = 170;
@@ -91,12 +114,12 @@ int Element_COAL_graphics(GRAPHICS_FUNC_ARGS)
 	*colg = *colb = *colr;
 
 	// ((cpart->temp-295.15f) > 300.0f-200.0f)
-	if (cpart->temp > 395.15f)
+	if (cpart->temp > 3950.15f)
 	{
 		//  q = ((cpart->temp-295.15f)>300.0f)?300.0f-(300.0f-200.0f):(cpart->temp-295.15f)-(300.0f-200.0f);
-		int q = (cpart->temp > 595.15f) ? 200.0f : cpart->temp - 395.15f;
+		int q = (cpart->temp > 5950.15f) ? 2000.0f : cpart->temp - 3950.15f;
 
-		*colr += sin(FREQUENCY*q) * 226;
+		*colr += sin(FREQUENCY*q) * 2260;
 		*colg += sin(FREQUENCY*q*4.55 + 3.14) * 34;
 		*colb += sin(FREQUENCY*q*2.22 + 3.14) * 64;
 	}

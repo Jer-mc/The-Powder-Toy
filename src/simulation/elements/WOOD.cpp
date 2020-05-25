@@ -23,7 +23,7 @@ void Element::Element_WOOD()
 	HotAir = 0.000f	* CFDS;
 	Falldown = 0;
 
-	Flammable = 20;
+	Flammable = 0;
 	Explosive = 0;
 	Meltable = 0;
 	Hardness = 15;
@@ -37,12 +37,15 @@ void Element::Element_WOOD()
 
 	LowPressure = IPL;
 	LowPressureTransition = NT;
-	HighPressure = IPH;
-	HighPressureTransition = NT;
-	LowTemperature = ITL;
-	LowTemperatureTransition = NT;
-	HighTemperature = 873.0f;
-	HighTemperatureTransition = PT_FIRE;
+	HighPressure = 5;
+	HighPressureTransition = PT_CHRC;
+	LowTemperature = NT;
+	LowTemperatureTransition = PT_CHRC;
+	HighTemperature = 676;
+	HighTemperatureTransition = PT_CHRC;
+
+	DefaultProperties.life = 210;
+	DefaultProperties.tmp = 50;
 
 	Update = &update;
 	Graphics = &graphics;
@@ -50,8 +53,26 @@ void Element::Element_WOOD()
 
 static int update(UPDATE_FUNC_ARGS)
 {
-	if (parts[i].temp > 450 && parts[i].temp > parts[i].tmp)
+	if (parts[i].temp > 1000 && parts[i].temp > parts[i].tmp)
 		parts[i].tmp = (int)parts[i].temp;
+	
+	parts[i].pavg[0] = parts[i].pavg[1];
+	parts[i].pavg[1] = sim->pv[y/CELL][x/CELL];
+	float diff = parts[i].pavg[1] - parts[i].pavg[0];
+
+
+	if (parts[i].type == PT_WOOD)
+	{
+		if ((sim->pv[y / CELL][x / CELL] > 4.3f) && parts[i].tmp > 40)
+			parts[i].tmp = 39;
+		else if (parts[i].tmp < 40 && parts[i].tmp>0)
+			parts[i].tmp--;
+		else if (parts[i].tmp <= 0) {
+			sim->part_change_type(i, x, y, PT_CHRC);
+			return 1;
+		}
+	}
+
 	return 0;
 }
 

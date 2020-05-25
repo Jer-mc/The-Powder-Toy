@@ -146,20 +146,115 @@ static int update(UPDATE_FUNC_ARGS)
 				}
 		break;
 	case PT_IRON:
-		for (rx=-1; rx<2; rx++)
-			for (ry=-1; ry<2; ry++)
+		for (rx = -1; rx < 2; rx++)
+			for (ry = -1; ry < 2; ry++)
 				if (BOUNDS_CHECK && (rx || ry))
 				{
-					r = pmap[y+ry][x+rx];
+					r = pmap[y + ry][x + rx];
 					if (!r)
 						continue;
-					if (TYP(r)==PT_DSTW || TYP(r)==PT_SLTW || TYP(r)==PT_WATR)
+					if (TYP(r) == PT_DSTW || TYP(r) == PT_SLTW || TYP(r) == PT_WATR)
 					{
-						int rndstore = RNG::Ref().gen()%100;
+						int rndstore = RNG::Ref().gen() % 100;
 						if (!rndstore)
-							sim->part_change_type(ID(r),x+rx,y+ry,PT_O2);
+							sim->part_change_type(ID(r), x + rx, y + ry, PT_O2);
 						else if (3 > rndstore)
-							sim->part_change_type(ID(r),x+rx,y+ry,PT_H2);
+							sim->part_change_type(ID(r), x + rx, y + ry, PT_H2);
+					}
+				}
+		break;
+
+	case PT_COPR:
+		for (rx = -1; rx < 2; rx++)
+			for (ry = -1; ry < 2; ry++)
+				if (BOUNDS_CHECK && (rx || ry))
+				{
+					r = pmap[y + ry][x + rx];
+					if (!r)
+						continue;
+					if (TYP(r) == PT_DSTW || TYP(r) == PT_SLTW || TYP(r) == PT_WATR)
+					{
+						int rndstore = RNG::Ref().gen() % 100;
+						if (!rndstore)
+							sim->part_change_type(ID(r), x + rx, y + ry, PT_O2);
+						else if (3 > rndstore)
+							sim->part_change_type(ID(r), x + rx, y + ry, PT_H2);
+					}
+				}
+		break;
+
+	case PT_BRNZ:
+		for (rx = -1; rx < 2; rx++)
+			for (ry = -1; ry < 2; ry++)
+				if (BOUNDS_CHECK && (rx || ry))
+				{
+					r = pmap[y + ry][x + rx];
+					if (!r)
+						continue;
+					if (TYP(r) == PT_DSTW || TYP(r) == PT_SLTW || TYP(r) == PT_WATR)
+					{
+						int rndstore = RNG::Ref().gen() % 100;
+						if (!rndstore)
+							sim->part_change_type(ID(r), x + rx, y + ry, PT_O2);
+						else if (3 > rndstore)
+							sim->part_change_type(ID(r), x + rx, y + ry, PT_H2);
+					}
+				}
+		break;
+
+	case PT_STEL:
+		for (rx = -1; rx < 2; rx++)
+			for (ry = -1; ry < 2; ry++)
+				if (BOUNDS_CHECK && (rx || ry))
+				{
+					r = pmap[y + ry][x + rx];
+					if (!r)
+						continue;
+					if (TYP(r) == PT_DSTW || TYP(r) == PT_SLTW || TYP(r) == PT_WATR)
+					{
+						int rndstore = RNG::Ref().gen() % 100;
+						if (!rndstore)
+							sim->part_change_type(ID(r), x + rx, y + ry, PT_O2);
+						else if (3 > rndstore)
+							sim->part_change_type(ID(r), x + rx, y + ry, PT_H2);
+					}
+				}
+		break;
+
+	case PT_TTSL:
+		for (rx = -1; rx < 2; rx++)
+			for (ry = -1; ry < 2; ry++)
+				if (BOUNDS_CHECK && (rx || ry))
+				{
+					r = pmap[y + ry][x + rx];
+					if (!r)
+						continue;
+					if (TYP(r) == PT_DSTW || TYP(r) == PT_SLTW || TYP(r) == PT_WATR)
+					{
+						int rndstore = RNG::Ref().gen() % 100;
+						if (!rndstore)
+							sim->part_change_type(ID(r), x + rx, y + ry, PT_O2);
+						else if (3 > rndstore)
+							sim->part_change_type(ID(r), x + rx, y + ry, PT_H2);
+					}
+				}
+		break;
+
+	case PT_DURA:
+		for (rx = -1; rx < 2; rx++)
+			for (ry = -1; ry < 2; ry++)
+				if (BOUNDS_CHECK && (rx || ry))
+				{
+					r = pmap[y + ry][x + rx];
+					if (!r)
+						continue;
+					if (TYP(r) == PT_DSTW || TYP(r) == PT_SLTW || TYP(r) == PT_WATR)
+					{
+						int rndstore = RNG::Ref().gen() % 100;
+						if (!rndstore)
+							sim->part_change_type(ID(r), x + rx, y + ry, PT_O2);
+						else if (3 > rndstore)
+							sim->part_change_type(ID(r), x + rx, y + ry, PT_H2);
 					}
 				}
 		break;
