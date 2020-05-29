@@ -93,6 +93,29 @@ static int update(UPDATE_FUNC_ARGS)
 						Element_FIRE_update(UPDATE_FUNC_SUBCALL_ARGS);
 					}
 					break;
+
+				case PT_PLTU:
+					if (RNG::Ref().chance(pressureFactor, 1000))
+					{
+						if (RNG::Ref().chance(1, 3))
+						{
+							sim->create_part(ID(r), x + rx, y + ry, RNG::Ref().chance(2, 3) ? PT_LAVA : PT_URAN);
+							parts[ID(r)].temp = MAX_TEMP;
+							if (parts[ID(r)].type == PT_LAVA) {
+								parts[ID(r)].tmp = 100;
+								parts[ID(r)].ctype = PT_PLUT;
+							}
+						}
+						else
+						{
+							sim->create_part(ID(r), x + rx, y + ry, PT_NEUT);
+							parts[ID(r)].vx = 0.25f * parts[ID(r)].vx + parts[i].vx;
+							parts[ID(r)].vy = 0.25f * parts[ID(r)].vy + parts[i].vy;
+						}
+						sim->pv[y / CELL][x / CELL] += 25.345f * CFDS; //Used to be 2, some people said nukes weren't powerful enough
+						Element_FIRE_update(UPDATE_FUNC_SUBCALL_ARGS);
+					}
+					break;
 #ifdef SDEUT
 				case PT_DEUT:
 					if (RNG::Ref().chance(pressureFactor + 1 + (parts[ID(r)].life/100), 1000))

@@ -27,7 +27,7 @@ void Element::Element_PLUT()
 	Hardness = 0;
 	PhotonReflectWavelengths = 0x001FCE00;
 
-	Weight = 90;
+	Weight = 85;
 
 	DefaultProperties.temp = R_TEMP + 4.0f + 273.15f;
 	HeatConduct = 251;
@@ -53,5 +53,28 @@ static int update(UPDATE_FUNC_ARGS)
 	{
 		sim->create_part(i, x, y, PT_NEUT);
 	}
+
+	if ((parts[i].temp > 1200)) {
+		int r, rx, ry;
+		float cxy = 0;
+		for (rx = -2; rx < 3; rx++)
+			for (ry = -2; ry < 3; ry++)
+				if (BOUNDS_CHECK && (rx || ry))
+				{
+					r = pmap[y + ry][x + rx];
+					if (!r)
+						continue;
+					if (TYP(r) == PT_URAN)
+					{
+						if (RNG::Ref().chance(99, 100))
+						{
+							sim->create_part(i, x, y, PT_PLTU);
+							sim->kill_part(ID(r));
+
+						}
+					}
+				}
+	}
+
 	return 0;
 }
