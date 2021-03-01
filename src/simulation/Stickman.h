@@ -1,7 +1,7 @@
 #ifndef STICKMAN_H_
 #define STICKMAN_H_
 
-#define MAX_FIGHTERS 100
+#define MAX_FIGHTERS 1
 struct playerst
 {
 	char comm;           //command cell
