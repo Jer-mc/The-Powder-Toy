@@ -3,11 +3,11 @@
 static int update(UPDATE_FUNC_ARGS);
 static int graphics(GRAPHICS_FUNC_ARGS);
 
-void Element::Element_GEL()
+void Element::Element_ORB()
 {
-	Identifier = "DEFAULT_PT_GEL";
-	Name = "GEL";
-	Colour = PIXPACK(0xFF9900);
+	Identifier = "DEFAULT_PT_ORB";
+	Name = "ORB";
+	Colour = PIXPACK(0xE7F9F3);
 	MenuVisible = 1;
 	MenuSection = SC_LIQUID;
 	Enabled = 1;
@@ -25,13 +25,13 @@ void Element::Element_GEL()
 	Flammable = 0;
 	Explosive = 0;
 	Meltable = 0;
-	Hardness = 20;
+	Hardness = 30;
 
 	Weight = 35;
 
 	DefaultProperties.temp = R_TEMP - 2.0f + 273.15f;
-	HeatConduct = 29;
-	Description = "Gel. A liquid with variable viscosity and heat conductivity.";
+	HeatConduct = 0;
+	Description = "ORB. Absorbs water and grows.";
 
 	Properties = TYPE_LIQUID|PROP_LIFE_DEC|PROP_NEUTPENETRATE;
 
@@ -51,7 +51,7 @@ void Element::Element_GEL()
 static int update(UPDATE_FUNC_ARGS)
 {
 	int r, rx, ry, rt;
-	bool gel;
+	bool ORB;
 	if (parts[i].tmp > 100)
 		parts[i].tmp = 100;
 	if (parts[i].tmp < 0)
@@ -61,7 +61,7 @@ static int update(UPDATE_FUNC_ARGS)
 		for (ry=-2; ry<3; ry++)
 			if (BOUNDS_CHECK && (rx || ry))
 			{
-				gel=false;
+				ORB=false;
 				r = pmap[y+ry][x+rx];
 				if (!r)
 					continue;
@@ -72,6 +72,7 @@ static int update(UPDATE_FUNC_ARGS)
 				case PT_WATR:
 				case PT_DSTW:
 				case PT_FRZW:
+				case PT_GLOW:
 					if (parts[i].tmp<100 && RNG::Ref().chance(500, absorbChanceDenom))
 					{
 						parts[i].tmp++;
@@ -106,24 +107,24 @@ static int update(UPDATE_FUNC_ARGS)
 					// Concentration diffusion
 					if (parts[ID(r)].life>0 && parts[i].tmp<100 && ((parts[ID(r)].life+1)>parts[i].tmp))
 					{
-						// SPNG -> GEL
+						// SPNG -> ORB
 						parts[ID(r)].life--;
 						parts[i].tmp++;
 					}
 					else if (parts[i].tmp>0 && (parts[ID(r)].life+1)<parts[i].tmp)
 					{
-						// SPNG <- GEL (saturation limit of SPNG is ignored here)
+						// SPNG <- ORB (saturation limit of SPNG is ignored here)
 						parts[ID(r)].life++;
 						parts[i].tmp--;
 					}
 					break;
-				case PT_GEL:
+				case PT_ORB:
 					if ((parts[ID(r)].tmp+1)<parts[i].tmp)
 					{
 						parts[ID(r)].tmp++;
 						parts[i].tmp--;
 					}
-					gel = true;
+					ORB = true;
 					break;
 				default:
 					break;
